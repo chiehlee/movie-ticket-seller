@@ -1,0 +1,14 @@
+Movies
+IA:77
+LoL:90
+Theaters
+A:300
+B:90
+C:500
+Shows
+1,1,1510
+Prices
+Adult:10
+Child:7
+Senior:8
+End
