@@ -1,0 +1,254 @@
+Chieh Lee
+Assignment9
+CS3500
+lee.chie@husky.neu.edu
+Instructor: Jessica Young Schmidt
+
+
+
+Contect:
+ -Problem statement
+ -Use Case1
+ -Use Case2
+ -Requirements
+ -Domains
+ -Relations
+ -Constraints
+ -Module dependency diagram
+ -Data Model
+ -UML diagram
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Movie Ticket Sales Management and Tracking System
+
+Problem statement:
+------------------
+
+Your goal is to design a Java application that will manage the sales of movie 
+tickets in a cinema complex. The complex consists of several theaters that show 
+movies at different times. The same movie may be showing in more than one theater.
+
+
+The ticket prices may be different for children, adults, and seniors. There 
+may also be a different price for the matinees.
+
+
+The cinema complex wants to be able to analyze its sales by various criteria 
+- tickets sold to seniors, tickets for a specific movie, matinee ticket sales, etc.
+
+
+Some cinema complexes may also have luxury theaters with higher fixed price for 
+all patrons.
+
+
+
+Use Case 1: Getting Movie Information and Sales Information
+-----------------------------------------------------------
+ 1. User may have different selections including Print Movies, associated with
+    show-time(s) and theater(s). 
+ 2. User is able to select the desired movie (associated with show-time/theater)
+ 3. User is able to input how many people are purchasing tickets and thier
+    condition for differnt price range (adult, elderly or children etc)
+ 4. The system is able to print out general information of tickets, including
+    the movie name, show-time, theater, and the total price.
+ 5. The system is able to tell the user if the given input is invalid and require 
+    the user to re-start the process over again.
+
+Use Case 2: Updating Movie Information
+--------------------------------------
+ 1. User is able to select 'add movie'/'remove movie'.
+ 2. User may remove any desired exsiting movie
+ 3. User may add any desired non-exsiting movie, and be requried to input information 
+    of show-time and theater.
+ 4. The system will mutated the data of movies.
+ 5. The system is able to tell if the movies conflics as well as show-time/theater 
+    conflicts.
+
+Requirements
+-------------
+The system shall allow user to input an integer refers to the index of a
+wish movie. If the user's input is out of range, the system shall be able
+to print the error message and ask the user to re-run the process
+
+The System then should be able to print movie tickes sales conclusion according
+to user's input.
+
+The outputing conclusion shall be String and include the wish movie name, associated
+show-time, theater, number of people, total price and anyother additional 
+information. 
+
+System manager (use case2) should be able to select an integer refer to 
+'add movie' or 'remove movie'.
+
+If add movie, system manager should input new movie name, show-time and theater, 
+while the system should check any conflicts between exsiting movies. Print error 
+message if any conflicts occur; restore the data and print successful message
+when it is not.
+
+If remove movie, system manager should be able to input an integer refer to any exisiting
+movie. The data manager should remove that movie from the data.
+
+Data of Movie name, show-time and theater are linked. System can find one of each
+
+The system can only do one movie per use. The system is able to process multiple people
+for one particular movie, however, if a user wish to purchase two movie at the same time,
+then this action is unsupported and shall be done separately.
+
+
+
+Domains:
+--------
+
+User interface: Input module
+		print any results, interact with user and incremental reports
+
+Manager interface: Input module for providing initial data and updating data
+        
+Data manager: module which keeps track of the data, be able to verifies data's 
+	      representation and process any updates
+
+Algorithm: any module that computes the sales information including total price.
+	   adding and removing algorithm etc.
+
+
+Relations:
+----------
+
+User interface: interacts with the user, provides selection of methods, such as
+                print out list of movies, show-times etc.. output messages according
+                to different selection of user's. 
+
+
+Manager interface: Allow the system manager or authorized person to modify the information.
+                   the manager should be albe add or remove any movie without any conflicts.
+                   Data manager should interact with such changes made by Manager. 
+
+Data manager: Hold all information of movies, show-time and theater for the cinema. Be
+              able to verify the intergity of data and communicates with the algorithms
+              and updates any changes from algorithms. return any result to both user
+              interface and manager interface for further report printing.
+
+Algorithms: Algorithms is asscoiated with Data manager since there aren't too many Algorithms
+            reqruied. It receives requests from data manager, computes any calculation such 
+            as adding tickets price. Be able to have any method that will mutate the data and 
+            reports to the data manager.
+
+
+Constraints:
+------------
+
+System can only do one movie per use.
+User cannot select any other selections are not provided
+Manager cannot add movie with conflicts.
+Manager cannot remove non-exisiting movie.
+
+
+
+Module dependency diagram:
+--------------------------
+
+  +----------------+        +-------------------------+        +-------------------+
+  | User Interface |<------>| Data manager/Algorithms |<------>| Manager Interface |
+  +----------------+        +-------------------------+        +-------------------+
+
+
+Data model:
+-----------
+ArrayList<Movie> movie: an ArrayList of movie
+
+Movie name: name of the movie
+HashMap<ShowTime, Theater> : HashMap track the show-time and the theater
+                             associated with this movie.
+
+ShowTime: show-time of the movie, has start time, end time and a string 
+          represents the total time (for printing purpose)
+Theater: the Theater which will perform the movie, has its name 
+
+Cinema: Tracks the movies as ArrayList<Movie>
+
+Price: there are three differnet price option for adult, elderly and under-age
+
+Number of people: how many people purchasing tickets
+
+One movie can have multiple HashMap, means a movie can be perform in different time
+and differnt theater
+In a certain time and certain theater can only perform one movie
+User cannot modify any data
+
+ 
+
+... and additional classes as needed; classes for user interactions,
+manager's functions. reporting functions??
+
+UML diagram:
+------------
+
++----------------------------------------+                             +-------------------------+
+| Cinema                                 |<-----------+----------------| User Interface          |
++----------------------------------------+            |                 +-------------------------+
+| ArrayList<Movie> movies                |--+         |                | void printMovie()       |
+| ArrayList<Theater> theaters            |  |         |                | void printShowTime()    |
++----------------------------------------+  |         |                | void printConclu()      |
+| void priceMap                          |  |         |                | void ManagerUI()        |
+| int getPrice()                         |  |         |                | ...                     |
+|                                        |  |         |                +-------------------------+
+|                                        |  |         |                 
+|                                        |  |         |   
+|                                        |  |         |                 
+|                                        |  |         | +------------------------------+               
+| ...                                    |  |         +-|          TicketSales         |               
++----------------------------------------+  |           +------------------------------+               
+                                            |           | void initCinema(fileName)    |------+           
+                +---------------------------+           | void processOrders(fileName) |      |        
+                |                                       | String reportSales()         |      |
+                v                                       | String managerReport()       |      |  
+       +-------------------------------------------+    | String logReport()           |      |
+       | Movie                                     |    | void addMovie()              |      |
+       +-------------------------------------------+    | void removeMovie()           |      |
+       | String name                               |    +------------------------------+      |
+ +-----| HashMap<Theater, ArrayList<ShowTimes>> st |------+                                   |
+ |     | int runningTime                           |      |                                   |
+ |     +-------------------------------------------+      |                                   |
+ |     | boolean checkConflict()                   |      |                                   |
+ |     | ShowTime getKey()                         |      |                                   v
+ |     | Theather getValue()                       |      |                     +--------------------------+
+ |     | ArrayList<ShowTime> allTime               |      |                     |        initialData       |
+ |     | ArrayList<Theater> allTheater             |      |                     +--------------------------+
+ |     | ...                                       |      |                     | void initialMovie(sc)    |
+ |     +-------------------------------------------+      |                     | void initialTheater(sc)  |
+ |                                             +----------+                     | void initialShowTime(sc) |
+ |                                             |                                | void initialPrice(sc)    |
+ +--------------------+                        |                                | ...                      |
+                      |                        |                                +--------------------------+
+                      |                        |
+                      v                        v
+          +-------------------------+  +-------------------------+
+          | ShowTime                |  | Theater                 |
+          +-------------------------+  +-------------------------+
+          | StartTime int           |  | String name             |
+          | endTime int             |  | int capacity            |
+          +-------------------------+  +-------------------------+
+          | String totalTime()      |  
+          | ...                     |
+          +-------------------------+  
+          
+
+
+ ...         
+
+Additional classes for user interfaces, for algorithms class, and reporting functions.
+Additional methods for all classes.
+
+
